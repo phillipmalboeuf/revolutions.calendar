@@ -5,8 +5,8 @@
   import holidays from './holidays.json'
   import { getSeasons } from './seasons'
 
-  let now = DateTime.now()
-  const [year, ...seasons] = getSeasons()
+  let now = DateTime.now().set({year: 2024})
+  const [year, ...seasons] = getSeasons(now.year)
   // let dates = holidays.find(({year}) => year == now.year)
   let next_dates = holidays.find(({year}) => year == now.year + 1)
 
@@ -17,10 +17,11 @@
   let next_spring = DateTime.fromISO(next_dates.spring)
 
   function format(d: DateTime) {
-    return d.toLocaleString({
-      dateStyle: 'long',
-      // timeStyle: 'long'
-    })
+    return d.toISO()
+    // return d.toLocaleString({
+    //   dateStyle: 'long',
+    //   // timeStyle: 'long'
+    // })
   }
 
   const start = spring.plus({ days: 0 })
@@ -42,7 +43,7 @@
   <tr>Now: {format(now)} (Leap: {now.isInLeapYear})</tr>
   <tr>-</tr>
   <tr>Spring equinox: {format(start)} ({format(spring)})</tr>
-  <tr>{format(start.plus({ days: spring_length }))} {format(start.plus({ days: spring_length+season_length }))}</tr>
+  <tr>{format(start.plus({ days: spring_length }))} {format(start.plus({ days: spring_length+(season_length) }))}</tr>
   <tr>-</tr>
   <tr>Summer solstice: {format(start.plus({ days: spring_length+season_length }))} ({format(summer)})</tr>
   <tr>{format(start.plus({ days: spring_length+season_length+summer_length }))} {format(start.plus({ days: spring_length+season_length+summer_length+season_length }))}</tr>
